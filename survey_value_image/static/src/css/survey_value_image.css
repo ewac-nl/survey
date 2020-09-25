@@ -1,0 +1,12 @@
+div.js_question-wrapper[allow_value_image|="True"] > .row
+{
+  display: flex;
+  flex-wrap: wrap;
+}
+div.js_question-wrapper[allow_value_image|="True"] > .row [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+.survey_value_image {
+    margin: 12px;
+}
