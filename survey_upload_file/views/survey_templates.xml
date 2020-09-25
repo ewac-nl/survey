@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Survey Upload File Assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/survey_upload_file/static/src/js/survey_upload_file.js" />
+        </xpath>
+    </template>
+    <!-- The template for files contains a non-empty text input that is displayed
+         if there is a previous value with a file. Browsers do not allow to actually
+         preload the contents of a file input. The text input is readonly, not disabled
+         because it needs to be submitted to the backend. If its value is (still) set,
+         the empty value for the file widget itself is ignored. -->
+    <template id="template_page_binary" name="File Upload">
+        <input type="file" t-att-name="prefix" class="form-control"/>
+        <t t-set="review_prefix" t-value="'review_%s' % prefix"/>
+        <t t-set="delete_prefix" t-value="'delete_%s' % prefix"/>
+        <input type="text" t-att-name="review_prefix" class="form-control hidden" readonly="readonly"/>
+        <a class="btn btn-danger hidden" t-att-name="delete_prefix">
+            <i class="fa fa-trash-o"/>
+            Delete
+        </a>
+    </template>
+    <template id="template_print_binary" name="File Upload">
+        <t t-set="review_prefix" t-value="'review_%s' % prefix"/>
+        <input type="text" t-att-name="review_prefix" class="form-control" disabled="disabled"/>
+    </template>
+    <template id="template_survey_page" inherit_id="survey.page">
+        <xpath expr="//form[hasclass('js_surveyform')]" position="attributes">
+                <attribute name="t-att-data-prefill-binary">'/survey/prefill-binary/%s/%s/%s' % (slug(survey), token, slug(page))</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('js_errzone')]" position="before">
+            <t t-if="question.type == 'binary'"><t t-call="survey_upload_file.template_page_binary"/></t>
+        </xpath>
+    </template>
+    <template id="template_survey_print" inherit_id="survey.survey_print">
+        <xpath expr="//div[hasclass('js_surveyform')]" position="attributes">
+                <attribute name="t-att-data-prefill-binary">'/survey/prefill-binary/%s/%s' % (slug(survey), token)</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('js_errzone')]" position="before">
+            <t t-if="question.type == 'binary'"><t t-call="survey_upload_file.template_print_binary"/></t>
+        </xpath>
+    </template>
+</odoo>

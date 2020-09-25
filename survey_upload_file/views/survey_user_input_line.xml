@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="survey_user_input_line_form">
+        <field name="inherit_id" ref="survey.survey_user_input_line_form"/>
+        <field name="model">survey.user_input_line</field>
+        <field name="arch" type="xml">
+            <field name="value_free_text" position="after">
+                <field name="value_binary_filename" invisible="1"/>
+                <field name="value_binary" filename="value_binary_filename"
+                       colspan='2' attrs="{'invisible': [('answer_type','!=','binary')]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>
